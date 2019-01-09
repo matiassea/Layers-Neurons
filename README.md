@@ -92,16 +92,112 @@ Ultimately, the weights of the neuron will be optimized for the provided trainin
 
 
 
+## Wrapping up
+
+Finally, we initialized the NeuralNetwork class and ran the code.
+Here is the entire code for this how to make a neural network in Python project:
+
+```python
+
+import numpy as np
+
+class NeuralNetwork():
+    
+    def __init__(self):
+        # seeding for random number generation
+        np.random.seed(1)
+        
+        #converting weights to a 3 by 1 matrix with values from -1 to 1 and mean of 0
+        self.synaptic_weights = 2 * np.random.random((3, 1)) - 1
+
+    def sigmoid(self, x):
+        #applying the sigmoid function
+        return 1 / (1 + np.exp(-x))
+
+    def sigmoid_derivative(self, x):
+        #computing derivative to the Sigmoid function
+        return x * (1 - x)
+
+    def train(self, training_inputs, training_outputs, training_iterations):
+        
+        #training the model to make accurate predictions while adjusting weights continually
+        for iteration in range(training_iterations):
+            #siphon the training data via  the neuron
+            output = self.think(training_inputs)
+
+            #computing error rate for back-propagation
+            error = training_outputs - output
+            
+            #performing weight adjustments
+            adjustments = np.dot(training_inputs.T, error * self.sigmoid_derivative(output))
+
+            self.synaptic_weights += adjustments
+
+    def think(self, inputs):
+        #passing the inputs via the neuron to get output   
+        #converting values to floats
+        
+        inputs = inputs.astype(float)
+        output = self.sigmoid(np.dot(inputs, self.synaptic_weights))
+        return output
+
+
+if __name__ == "__main__":
+
+    #initializing the neuron class
+    neural_network = NeuralNetwork()
+
+    print("Beginning Randomly Generated Weights: ")
+    print(neural_network.synaptic_weights)
+
+    #training data consisting of 4 examples--3 input values and 1 output
+    training_inputs = np.array([[0,0,1],
+                                [1,1,1],
+                                [1,0,1],
+                                [0,1,1]])
+
+    training_outputs = np.array([[0,1,1,0]]).T
+
+    #training taking place
+    neural_network.train(training_inputs, training_outputs, 15000)
+
+    print("Ending Weights After Training: ")
+    print(neural_network.synaptic_weights)
+
+    user_input_one = str(input("User Input One: "))
+    user_input_two = str(input("User Input Two: "))
+    user_input_three = str(input("User Input Three: "))
+    
+    print("Considering New Situation: ", user_input_one, user_input_two, user_input_three)
+    print("New Output data: ")
+    print(neural_network.think(np.array([user_input_one, user_input_two, user_input_three])))
+    print("Wow, we did it!")
+
+```
+
+Here is the output for running the code:
+
+![redes 1](https://user-images.githubusercontent.com/17385297/50902364-75769180-13f9-11e9-9fe4-c65530701e25.PNG)
+
+
+We managed to create a simple neural network.
+
+The neuron began by allocating itself some random weights. Thereafter, it trained itself using the training examples.
+
+Consequently, if it was presented with a new situation [1,0,0], it gave the value of 0.9999584.
+
+You remember that the correct answer we wanted was 1?
+
+Then, that’s very close—considering that the Sigmoid function outputs values between 0 and 1.
+
+Of course, we only used one neuron network to carry out the simple task. What if we connected several thousands of these artificial neural networks together? Could we possibly mimic how the human mind works 100%?
+
+
+[Source](https://www.kdnuggets.com/2018/10/simple-neural-network-python.html).
 
 
 
-
-
-
-
-
-
-artificial neural networks (ANNs)
+## Artificial neural networks (ANNs)
 
 Every network has a single input and output layers. The number of neurons in the input layer equals the number of input variables in the data being processed. The number of neurons in the output layer equals the number of outputs associated with each input. But the challenge is knowing the number of hidden layers and their neurons.
 
@@ -122,3 +218,7 @@ Knowing that we need hidden layers to make us need to answer two important quest
 
 1. What is the required number of hidden layers?
 2. What is the number of the hidden neurons across each hidden layer? 
+
+
+
+[Source](https://www.kdnuggets.com/2018/07/beginners-ask-how-many-hidden-layers-neurons-neural-networks.html)
